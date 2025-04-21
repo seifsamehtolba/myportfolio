@@ -39,7 +39,7 @@ const About = () => {
           transition={{ duration: 0.8 }}
         >
           <motion.img
-            src="https://via.placeholder.com/400"
+            src="/images/pfp.png"
             alt="Seif Tolba"
             style={{
               width: '100%',
