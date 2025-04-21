@@ -1,4 +1,4 @@
-import { Box, Container, Typography, LinearProgress, Grid, useTheme } from '@mui/material';
+import { Box, Container, Typography, LinearProgress, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 
 interface Skill {

@@ -1,43 +1,6 @@
 import { createTheme, responsiveFontSizes, ThemeOptions } from '@mui/material/styles';
 import { deepmerge } from '@mui/utils';
 
-// Elegant color palette
-const colors = {
-  primary: {
-    main: '#2D3250', // Deep navy blue
-    light: '#424769',
-    dark: '#1B1F3B',
-  },
-  secondary: {
-    main: '#F66B0E', // Vibrant orange
-    light: '#FF8B3D',
-    dark: '#D45500',
-  },
-  accent: {
-    main: '#676F9D', // Muted blue-gray
-    light: '#8891C1',
-    dark: '#4C5275',
-  },
-  background: {
-    light: '#FFFFFF',
-    dark: '#121212',
-    paper: {
-      light: '#F8F9FA',
-      dark: '#1E1E1E',
-    },
-  },
-  text: {
-    light: {
-      primary: '#2D3250',
-      secondary: '#676F9D',
-    },
-    dark: {
-      primary: '#E8E9F3',
-      secondary: '#B4B8D8',
-    },
-  },
-};
-
 const baseTheme: ThemeOptions = {
   typography: {
     fontFamily: "'Inter', 'Roboto', 'Helvetica', 'Arial', sans-serif",

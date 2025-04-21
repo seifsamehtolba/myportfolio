@@ -1,4 +1,4 @@
-import { Box, Container, Typography, Card, CardMedia, CardContent, Button, Chip, Stack, Grid } from '@mui/material';
+import { Box, Container, Typography, Card, CardMedia, CardContent, Button, Chip, Stack } from '@mui/material';
 import { GitHub as GitHubIcon, Launch as LaunchIcon } from '@mui/icons-material';
 import { motion } from 'framer-motion';
 

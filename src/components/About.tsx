@@ -1,141 +1,96 @@
-import { Box, Container, Typography, Grid, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 
 const About = () => {
   const theme = useTheme();
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
   return (
     <Box
-      component="section"
       id="about"
       sx={{
-        py: { xs: 12, md: 16 },
-        bgcolor: 'background.default',
+        minHeight: '100vh',
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
+        justifyContent: 'center',
+        py: 8,
+        px: { xs: 2, md: 4 },
+        backgroundColor: theme.palette.background.default,
       }}
     >
-      <Container 
-        maxWidth="lg"
+      <Box
+        ref={ref}
         sx={{
-          display: 'flex',
-          flexDirection: 'column',
+          maxWidth: '1200px',
+          width: '100%',
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' },
+          gap: 4,
           alignItems: 'center',
         }}
       >
-        <Typography
-          component={motion.h2}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          variant="h2"
-          gutterBottom
-          sx={{ 
-            mb: 6,
-            textAlign: 'center',
-          }}
+        <motion.div
+          initial={{ opacity: 0, x: -50 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8 }}
         >
-          About Me
-        </Typography>
+          <motion.img
+            src="https://via.placeholder.com/400"
+            alt="Seif Tolba"
+            style={{
+              width: '100%',
+              maxWidth: '400px',
+              height: 'auto',
+              borderRadius: '8px',
+              boxShadow: theme.shadows[4],
+            }}
+          />
+        </motion.div>
 
-        <Grid
-          container
-          spacing={4}
-          component={motion.div}
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          sx={{
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+        <motion.div
+          initial={{ opacity: 0, x: 50 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2 }}
         >
-          <Grid item xs={12} md={6}>
-            <Box
-              sx={{
-                position: 'relative',
-                borderRadius: 2,
-                overflow: 'hidden',
-                aspectRatio: '1/1',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                background: 'transparent',
-                maxWidth: '300px',
-                mx: 'auto',
-              }}
-            >
-              <Box
-                component={motion.img}
-                initial={{ scale: 1.2 }}
-                whileInView={{ scale: 1 }}
-                transition={{ duration: 1.5 }}
-                viewport={{ once: true }}
-                src="/images/pfp.png"
-                alt="Seif Tolba"
-                sx={{
-                  maxWidth: '80%',
-                  maxHeight: '80%',
-                  width: 'auto',
-                  height: 'auto',
-                  objectFit: 'contain',
-                  background: 'transparent',
-                }}
-              />
-            </Box>
-          </Grid>
-
-          <Grid item xs={12} md={6}>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: { xs: 'center', md: 'flex-start' },
-                textAlign: { xs: 'center', md: 'left' },
-              }}
-            >
-              <Box
-                component={motion.div}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                viewport={{ once: true }}
-                sx={{
-                  maxWidth: '600px',
-                  mx: 'auto',
-                }}
-              >
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  paragraph
-                  sx={{ mb: 2 }}
-                >
-                  I'm Seif Tolba, a freelance developer and Computer Engineering student passionate about crafting innovative software solutions. My journey in tech is driven by a commitment to continuous learning and building impactful projects.
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  paragraph
-                  sx={{ mb: 2 }}
-                >
-                  I specialize in full-stack development, with expertise in React, TypeScript, Node.js, and modern web technologies.
-                  I'm passionate about creating intuitive user experiences and writing clean, maintainable code.
-                </Typography>
-                <Typography
-                  variant="body1"
-                  color="text.secondary"
-                  paragraph
-                >
-                  I'm always excited to take on new challenges and collaborate on interesting projects.
-                  Let's build something amazing together!
-                </Typography>
-              </Box>
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
+          <Typography
+            variant="h2"
+            sx={{
+              mb: 3,
+              color: theme.palette.text.primary,
+              fontWeight: 'bold',
+            }}
+          >
+            About Me
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              mb: 3,
+              color: theme.palette.text.secondary,
+              lineHeight: 1.8,
+            }}
+          >
+            I'm a passionate Full Stack Developer with expertise in building modern web applications.
+            My journey in software development started with a deep curiosity about how things work
+            and has evolved into a career focused on creating efficient, scalable, and user-friendly
+            solutions.
+          </Typography>
+          <Typography
+            variant="body1"
+            sx={{
+              color: theme.palette.text.secondary,
+              lineHeight: 1.8,
+            }}
+          >
+            When I'm not coding, you can find me exploring new technologies, contributing to open-source
+            projects, or sharing my knowledge with the developer community.
+          </Typography>
+        </motion.div>
+      </Box>
     </Box>
   );
 };
