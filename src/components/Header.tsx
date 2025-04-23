@@ -12,14 +12,20 @@ import {
   MenuItem,
   useScrollTrigger,
   Slide,
+  Tooltip,
+  Zoom,
+  tooltipClasses,
+  TooltipProps,
 } from '@mui/material';
 import {
   Menu as MenuIcon,
   DarkMode as DarkModeIcon,
   LightMode as LightModeIcon,
+  PlayArrow,
+  Pause,
 } from '@mui/icons-material';
 import { useColorMode } from '../App';
-import MusicPlayer from './MusicPlayer';
+import { styled } from '@mui/material/styles';
 
 const navItems = ['Home', 'Work', 'Services', 'Skills', 'About', 'Contact'];
 
@@ -38,15 +44,60 @@ function HideOnScroll(props: HideOnScrollProps) {
   );
 }
 
-const Header = () => {
+interface HeaderProps {
+  isPlaying: boolean;
+  onTogglePlay: () => void;
+}
+
+const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
+  <Tooltip {...props} classes={{ popper: className }} />
+))(() => ({
+  [`& .${tooltipClasses.tooltip}`]: {
+    backgroundColor: 'rgba(15, 23, 42, 0.95)',
+    color: '#fff',
+    fontSize: '0.875rem',
+    borderRadius: '8px',
+    padding: '8px 16px',
+    boxShadow: '0 0 20px rgba(0, 0, 0, 0.3)',
+    border: '1px solid rgba(255, 255, 255, 0.1)',
+    backdropFilter: 'blur(10px)',
+  },
+  [`& .${tooltipClasses.arrow}`]: {
+    color: 'rgba(15, 23, 42, 0.95)',
+    '&::before': {
+      border: '1px solid rgba(255, 255, 255, 0.1)',
+    },
+  },
+}));
+
+const Header = ({ isPlaying, onTogglePlay }: HeaderProps) => {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const { mode, toggleColorMode } = useColorMode();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showPlayTooltip, setShowPlayTooltip] = useState(false);
+  const [showThemeTooltip, setShowThemeTooltip] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
     };
+
+    // Check if user has seen tooltips before
+    const hasSeenTooltips = localStorage.getItem('hasSeenTooltips');
+    if (!hasSeenTooltips) {
+      // Show play tooltip first
+      setTimeout(() => setShowPlayTooltip(true), 1000);
+      // Show theme tooltip after play tooltip
+      setTimeout(() => {
+        setShowPlayTooltip(false);
+        setShowThemeTooltip(true);
+      }, 4000);
+      // Hide theme tooltip
+      setTimeout(() => {
+        setShowThemeTooltip(false);
+        localStorage.setItem('hasSeenTooltips', 'true');
+      }, 7000);
+    }
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -81,15 +132,22 @@ const Header = () => {
           <Toolbar disableGutters sx={{ height: isScrolled ? 64 : 80, transition: 'height 0.3s ease-in-out' }}>
             {/* Mobile menu */}
             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
-                onClick={handleOpenNavMenu}
-                color="inherit"
+              <Tooltip 
+                title="Menu" 
+                open={showPlayTooltip}
+                arrow
+                TransitionComponent={Zoom}
               >
-                <MenuIcon />
-              </IconButton>
+                <IconButton
+                  size="large"
+                  aria-controls="menu-appbar"
+                  aria-haspopup="true"
+                  onClick={handleOpenNavMenu}
+                  color="inherit"
+                >
+                  <MenuIcon />
+                </IconButton>
+              </Tooltip>
               <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
@@ -184,23 +242,72 @@ const Header = () => {
                 position: 'absolute',
                 right: 16,
                 display: 'flex',
-                gap: 2,
+                gap: 3,
                 alignItems: 'center',
               }}
             >
-              <MusicPlayer />
-              <IconButton
-                onClick={toggleColorMode}
-                sx={{
-                  width: 40,
-                  height: 40,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
+              <StyledTooltip
+                title={
+                  <Typography sx={{ lineHeight: 1.5 }}>
+                    {isPlaying 
+                      ? "Exit presentation mode"
+                      : "Start guided tour with music\nUse Space to play/pause\nArrow keys to navigate"}
+                  </Typography>
+                }
+                open={showPlayTooltip}
+                arrow
+                placement="bottom"
+                TransitionComponent={Zoom}
+                enterDelay={100}
+                leaveDelay={200}
               >
-                {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
-              </IconButton>
+                <IconButton
+                  onClick={onTogglePlay}
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'transform 0.2s ease-in-out',
+                    '&:hover': {
+                      transform: 'scale(1.1)',
+                    },
+                  }}
+                >
+                  {isPlaying ? <Pause /> : <PlayArrow />}
+                </IconButton>
+              </StyledTooltip>
+              <StyledTooltip
+                title={
+                  <Typography>
+                    Switch to {mode === 'dark' ? 'light' : 'dark'} mode
+                  </Typography>
+                }
+                open={showThemeTooltip}
+                arrow
+                placement="bottom"
+                TransitionComponent={Zoom}
+                enterDelay={100}
+                leaveDelay={200}
+              >
+                <IconButton
+                  onClick={toggleColorMode}
+                  sx={{
+                    width: 40,
+                    height: 40,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'transform 0.2s ease-in-out',
+                    '&:hover': {
+                      transform: 'scale(1.1)',
+                    },
+                  }}
+                >
+                  {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+                </IconButton>
+              </StyledTooltip>
             </Box>
           </Toolbar>
         </Container>

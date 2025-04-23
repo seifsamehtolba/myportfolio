@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext, useMemo } from 'react';
-import { ThemeProvider, CssBaseline, Box, useMediaQuery } from '@mui/material';
+import { ThemeProvider, CssBaseline, Box, useMediaQuery, IconButton } from '@mui/material';
+import { PlayArrow, Pause } from '@mui/icons-material';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Work from './components/Work';
@@ -7,6 +8,7 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Skills from './components/Skills';
 import Services from './components/Services';
+import PortfolioPresentation from './components/PortfolioPresentation';
 import { light, dark } from './theme';
 
 type ColorMode = 'light' | 'dark';
@@ -26,6 +28,8 @@ export const useColorMode = () => useContext(ColorModeContext);
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [mode, setMode] = useState<ColorMode>(prefersDarkMode ? 'dark' : 'light');
+  const [isPresentationMode, setIsPresentationMode] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const savedMode = localStorage.getItem('colorMode') as ColorMode | null;
@@ -48,6 +52,16 @@ function App() {
 
   const theme = useMemo(() => (mode === 'light' ? light : dark), [mode]);
 
+  const togglePlay = () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      setIsPresentationMode(false);
+    } else {
+      setIsPlaying(true);
+      setIsPresentationMode(true);
+    }
+  };
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -60,14 +74,37 @@ function App() {
             duration: theme.transitions.duration.standard,
           }),
         }}>
-          <Header />
+          <Header isPlaying={isPlaying} onTogglePlay={togglePlay} />
           <Box component="main">
-            <Hero />
-            <Work />
-            <About />
-            <Services />
-            <Skills />
-            <Contact />
+            {isPresentationMode ? (
+              <PortfolioPresentation onExit={() => {
+                setIsPresentationMode(false);
+                setIsPlaying(false);
+              }} />
+            ) : (
+              <>
+                <IconButton
+                  onClick={togglePlay}
+                  sx={{
+                    position: 'fixed',
+                    bottom: 20,
+                    right: 20,
+                    bgcolor: 'background.paper',
+                    '&:hover': {
+                      bgcolor: 'action.hover',
+                    },
+                  }}
+                >
+                  {isPlaying ? <Pause /> : <PlayArrow />}
+                </IconButton>
+                <Hero />
+                <Work />
+                <About />
+                <Services />
+                <Skills />
+                <Contact />
+              </>
+            )}
           </Box>
         </Box>
       </ThemeProvider>

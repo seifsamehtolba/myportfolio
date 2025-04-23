@@ -17,7 +17,7 @@ const MusicPlayer = () => {
     }
 
     // Set initial time to 20 seconds
-    audioRef.current.currentTime = 20;
+    audioRef.current.currentTime = 50;
 
     // Try to play if user hasn't explicitly turned it off
     if (musicPreference !== 'off') {
