@@ -3,7 +3,6 @@ import {
   IconButton,
   Box,
   Typography,
-  useTheme,
   LinearProgress,
   Tooltip,
   Zoom,
@@ -37,6 +36,9 @@ interface PortfolioPresentationProps {
   onExit: () => void;
 }
 
+// Add type for progressInterval
+type ProgressIntervalType = ReturnType<typeof setInterval> | null;
+
 const StyledTooltip = styled(({ className, ...props }: TooltipProps) => (
   <Tooltip {...props} classes={{ popper: className }} />
 ))(() => ({
@@ -65,8 +67,7 @@ const PortfolioPresentation = ({ onExit }: PortfolioPresentationProps) => {
   const [showTooltips, setShowTooltips] = useState(false);
   const [activeTooltip, setActiveTooltip] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const progressInterval = useRef<NodeJS.Timeout | null>(null);
-  const theme = useTheme();
+  const progressInterval = useRef<ProgressIntervalType>(null);
 
   useEffect(() => {
     const musicPreference = localStorage.getItem('musicPreference');

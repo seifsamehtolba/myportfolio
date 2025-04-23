@@ -3,11 +3,7 @@ import { motion } from 'framer-motion';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Link } from 'react-scroll';
 
-interface HeroProps {
-  isPresentationMode?: boolean;
-}
-
-const Hero = ({ isPresentationMode = false }: HeroProps) => {
+const Hero = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
