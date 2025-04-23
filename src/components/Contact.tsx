@@ -23,7 +23,7 @@ const Contact = () => {
     {
       icon: <EmailIcon />,
       label: 'Email',
-      url: 'mailto:ssitolba@icloud.com',
+      url: 'mailto:contact@seiftolba.xyz',
     },
     {
       icon: <ChatIcon />,
