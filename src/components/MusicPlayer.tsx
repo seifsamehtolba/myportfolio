@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { IconButton } from '@mui/material';
 import { PlayArrow, Pause } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
