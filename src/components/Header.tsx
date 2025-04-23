@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
 import {
   AppBar,
@@ -18,8 +18,8 @@ import {
   DarkMode as DarkModeIcon,
   LightMode as LightModeIcon,
 } from '@mui/icons-material';
-import { motion, AnimatePresence } from 'framer-motion';
 import { useColorMode } from '../App';
+import MusicPlayer from './MusicPlayer';
 
 const navItems = ['Home', 'Work', 'Services', 'Skills', 'About', 'Contact'];
 
@@ -80,7 +80,7 @@ const Header = () => {
         <Container maxWidth="lg">
           <Toolbar disableGutters sx={{ height: isScrolled ? 64 : 80, transition: 'height 0.3s ease-in-out' }}>
             {/* Mobile menu */}
-            <Box sx={{ display: { xs: 'flex', md: 'none' }, width: '100%', justifyContent: 'center' }}>
+            <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
               <IconButton
                 size="large"
                 aria-controls="menu-appbar"
@@ -179,30 +179,29 @@ const Header = () => {
               ))}
             </Box>
 
-            <IconButton
-              onClick={toggleColorMode}
-              color="inherit"
+            <Box
               sx={{
                 position: 'absolute',
                 right: 16,
-                transition: 'transform 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'rotate(180deg)',
-                },
+                display: 'flex',
+                gap: 2,
+                alignItems: 'center',
               }}
             >
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={mode}
-                  initial={{ scale: 0, rotate: 180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  exit={{ scale: 0, rotate: -180 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
-                </motion.div>
-              </AnimatePresence>
-            </IconButton>
+              <MusicPlayer />
+              <IconButton
+                onClick={toggleColorMode}
+                sx={{
+                  width: 40,
+                  height: 40,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+              </IconButton>
+            </Box>
           </Toolbar>
         </Container>
       </AppBar>
