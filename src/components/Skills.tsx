@@ -1,18 +1,20 @@
 import { Box, Container, Typography, LinearProgress, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
+import ReactLogo from '../assets/react.svg';
 
 interface Skill {
   name: string;
   level: number;
+  logo: string;
 }
 
 const skills: Skill[] = [
-  { name: 'React/Next.js', level: 90 },
-  { name: 'TypeScript/JavaScript', level: 90 },
-  { name: 'Node.js', level: 85 },
-  { name: 'Python/Flask', level: 85 },
-  { name: 'SQL/NoSQL', level: 80 },
-  { name: 'UI/UX Design', level: 75 },
+  { name: 'React/Next.js', level: 90, logo: ReactLogo },
+  { name: 'TypeScript/JavaScript', level: 90, logo: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/typescript/typescript-original.svg' },
+  { name: 'Node.js', level: 85, logo: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg' },
+  { name: 'Python/Flask', level: 85, logo: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg' },
+  { name: 'SQL/NoSQL', level: 80, logo: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original.svg' },
+  { name: 'UI/UX Design', level: 75, logo: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/figma/figma-original.svg' },
 ];
 
 const SkillBar = ({ skill }: { skill: Skill }) => {
@@ -24,18 +26,40 @@ const SkillBar = ({ skill }: { skill: Skill }) => {
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
+          alignItems: 'center',
           mb: 1.5,
         }}
       >
-        <Typography
-          variant="subtitle1"
-          sx={{
-            fontWeight: 600,
-            color: 'text.primary',
-          }}
-        >
-          {skill.name}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: 24,
+              height: 24,
+            }}
+          >
+            <img 
+              src={skill.logo} 
+              alt={`${skill.name} logo`}
+              style={{ 
+                width: '100%', 
+                height: '100%',
+                objectFit: 'contain'
+              }}
+            />
+          </Box>
+          <Typography
+            variant="subtitle1"
+            sx={{
+              fontWeight: 600,
+              color: 'text.primary',
+            }}
+          >
+            {skill.name}
+          </Typography>
+        </Box>
         <Typography
           variant="body2"
           sx={{
